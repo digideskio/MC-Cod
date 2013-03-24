@@ -67,7 +67,7 @@ public class test extends JavaPlugin implements Listener {
 	public void onJoin(PlayerJoinEvent e) {
 		gamePlayerList.put(e.getPlayer().getName(),
 				new GamePlayer(e.getPlayer()));
-		if (Bukkit.getServer().getOnlinePlayers().length > 1) {
+		if (Bukkit.getServer().getOnlinePlayers().length > 10) {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 
 				@Override
@@ -88,7 +88,9 @@ public class test extends JavaPlugin implements Listener {
 
 	@EventHandler
 	public void invMoveEvent(InventoryClickEvent e) {
+		if(!e.getView().getPlayer().isOp()){
 		e.setCancelled(true);
+		}
 	}
 
 	@EventHandler
