@@ -6,12 +6,13 @@ import org.bukkit.block.Chest;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerEggThrowEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class CarePackageHandler {
+public class CarePackageHandler implements Listener{
 	@EventHandler
 	public void onThrow(PlayerEggThrowEvent e) {
 		e.setHatching(false);
@@ -22,10 +23,13 @@ public class CarePackageHandler {
 		if (event.getEntity() instanceof Egg) {
 			Player p = (Player) event.getEntity().getShooter();
 			Location loc = event.getEntity().getLocation();
-			loc.setY(event.getEntity().getLocation().getY());
+			loc.setY(event.getEntity().getLocation().getY()+20);
 			loc.setX(event.getEntity().getLocation().getX());
 			loc.setZ(event.getEntity().getLocation().getZ());
-			carePackage(p);
+			Byte blockData = 0x0;
+			p.getWorld().spawnFallingBlock(loc, Material.CHEST, blockData);
+			//carePackage(p);
+			
 		}
 	}
 
@@ -34,13 +38,14 @@ public class CarePackageHandler {
 		Location loc = p.getLocation();
 		loc.setY(p.getLocation().getY() + 20);
 		Byte blockData = 0x0;
-		Chest c = (Chest) loc.getBlock();
+		//Chest c = (Chest) loc.getBlock();
 		p.getWorld().spawnFallingBlock(loc, Material.CHEST, blockData);
-		loc.setX(p.getLocation().getX() + 1);
-		ItemStack ammo = new ItemStack(Material.GHAST_TEAR, 64);
-		Inventory inv = c.getInventory();
-		inv.addItem(ammo);
-		c.update();
+		//loc.setX(p.getLocation().getX() + 1);
+		//ItemStack ammo = new ItemStack(Material.GHAST_TEAR, 64);
+		//Inventory inv = c.getInventory();
+		//inv.addItem(ammo);
+		//c.update();
 
 	}
+	
 }

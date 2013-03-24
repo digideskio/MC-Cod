@@ -40,12 +40,14 @@ public class test extends JavaPlugin implements Listener {
 			10);
 	private HashMap<String, Gun> gunList = new HashMap<String, Gun>(10);
 	private GameEngine engine;
+	private CarePackageHandler carePackage;
 
 	@Override
 	public void onEnable() {
 		log.info("Started up my bitch.");
 		World w = Bukkit.createWorld(new WorldCreator("playworld"));
 		engine = new GameEngine(180);
+		carePackage = new CarePackageHandler();
 		gunList.put("gun", new Gun("gun", Material.WOOD_HOE, 5, 3, 1, 3, 3));
 		registerEvents();
 	}
@@ -58,6 +60,7 @@ public class test extends JavaPlugin implements Listener {
 	private void registerEvents() {
 		this.getServer().getPluginManager().registerEvents(this, this);
 		this.getServer().getPluginManager().registerEvents(engine, this);
+		this.getServer().getPluginManager().registerEvents(carePackage, this);
 	}
 
 	@EventHandler
