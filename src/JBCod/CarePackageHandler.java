@@ -2,6 +2,7 @@ package JBCod;
 
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
@@ -15,6 +16,7 @@ import org.bukkit.event.player.PlayerEggThrowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class CarePackageHandler implements Listener{
 	public ArrayList<Location> chests = new ArrayList<Location>();
@@ -42,8 +44,11 @@ public class CarePackageHandler implements Listener{
 			if(!chests.contains(loc)){
 				Chest c = (Chest) loc.getBlock().getState();
 				Inventory inv = c.getInventory();
-				
-				inv.addItem(new ItemStack(Material.GHAST_TEAR,64));
+				ItemStack ammo = new ItemStack(Material.GHAST_TEAR,64);
+				ItemMeta meta = ammo.getItemMeta();
+				meta.setDisplayName(ChatColor.RED+""+ChatColor.BOLD+"Ammo");
+				ammo.setItemMeta(meta);
+				inv.addItem(ammo);
 				c.update();
 				chests.add(loc);
 			}

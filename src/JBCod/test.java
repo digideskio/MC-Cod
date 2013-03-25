@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
@@ -20,6 +21,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -41,6 +43,7 @@ public class test extends JavaPlugin implements Listener {
 	private HashMap<String, Gun> gunList = new HashMap<String, Gun>(10);
 	private GameEngine engine;
 	private CarePackageHandler carePackage;
+	private Grenade grenade;
 
 	@Override
 	public void onEnable() {
@@ -48,6 +51,7 @@ public class test extends JavaPlugin implements Listener {
 		World w = Bukkit.createWorld(new WorldCreator("playworld"));
 		engine = new GameEngine(180);
 		carePackage = new CarePackageHandler();
+		grenade = new Grenade();
 		gunList.put("gun", new Gun("gun", Material.WOOD_HOE, 5, 3, 1, 3, 3));
 		registerEvents();
 	}
@@ -61,13 +65,14 @@ public class test extends JavaPlugin implements Listener {
 		this.getServer().getPluginManager().registerEvents(this, this);
 		this.getServer().getPluginManager().registerEvents(engine, this);
 		this.getServer().getPluginManager().registerEvents(carePackage, this);
+		this.getServer().getPluginManager().registerEvents(grenade, this);
 	}
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		gamePlayerList.put(e.getPlayer().getName(),
 				new GamePlayer(e.getPlayer()));
-		if (Bukkit.getServer().getOnlinePlayers().length > 10) {
+		if (Bukkit.getServer().getOnlinePlayers().length > 2) {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 
 				@Override
@@ -88,7 +93,7 @@ public class test extends JavaPlugin implements Listener {
 
 	@EventHandler
 	public void invMoveEvent(InventoryClickEvent e) {
-		if(!e.getView().getPlayer().isOp()){
+		if(!(e.getView().getPlayer().isOp())){
 		e.setCancelled(true);
 		}
 	}
@@ -253,7 +258,7 @@ public class test extends JavaPlugin implements Listener {
 
 	@EventHandler
 	public void onScoreBoardOpenEvent(PlayerDropItemEvent e) {
-		e.setCancelled(true);
+		
 	}
 
 	@EventHandler
